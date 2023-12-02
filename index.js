@@ -171,9 +171,83 @@ document.addEventListener("DOMContentLoaded", function () {
       nextButton.style.color = "#C1C1C1";
       mobilenextButton.style.color = "#C1C1C1";
     } else {
-        nextButton.style.color = "#FFF";
-        mobilenextButton.style.color = "#FFF";
+      nextButton.style.color = "#FFF";
+      mobilenextButton.style.color = "#FFF";
     }
+  }
+
+  function submitform() {
+    const input_1 = document.getElementById("bankstep1_1").value;
+    const bankstep1_3_1 = document.getElementById("bankstep1_3_1").checked
+      ? "E-Commerce"
+      : "";
+    const bankstep1_3_2 = document.getElementById("bankstep1_3_2").checked
+      ? "Wholesale trade"
+      : "";
+    const bankstep1_3_3 = document.getElementById("bankstep1_3_3").checked
+      ? "Marketing"
+      : "";
+    const bankstep1_3_4 = document.getElementById("bankstep1_3_4").checked
+      ? "Retail"
+      : "";
+    const bankstep1_3_5 = document.getElementById("bankstep1_3_5").checked
+      ? "Logistics"
+      : "";
+    const bankstep1_3_6 = document.getElementById("bankstep1_3_6").checked
+      ? "General trade"
+      : "";
+    const bankstep1_3_7 = document.getElementById("bankstep1_3_7").checked
+      ? "Consultancy"
+      : "";
+    const input_5 = document.getElementById("bankstep1_5").style.display === "none"?"Yes":"No";
+    const input_6 = document.getElementById("bankstep1_6").style.display !== "none"?"Traditional":"Co-working";
+    const input_7 = document.getElementById("bankstep2_1").value;
+    const input_8 = document.getElementById("bankstep2_2").value;
+    const input_9 = document.getElementById("bankstep2_3").value;
+    const countrycode = document.getElementById(
+      "step-1-country-code"
+    ).textContent;
+    const formdata = {
+      input_1,
+      ["input_3.1"]: bankstep1_3_1,
+      ["input_3.2"]: bankstep1_3_2,
+      ["input_3.3"]: bankstep1_3_3,
+      ["input_3.4"]: bankstep1_3_4,
+      ["input_3.5"]: bankstep1_3_5,
+      ["input_3.6"]: bankstep1_3_6,
+      ["input_3.7"]: bankstep1_3_7,
+      input_5,
+      input_6,
+      input_7,
+      input_8:countrycode+input_8,
+      input_9,
+    }
+    fetch(
+      "https://test.wp.levitation.co.in/wp-json/gf/v2/forms/14/submissions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formdata),
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((res) => {
+        if (currentStep < totalSteps) {
+          currentStep++;
+          showStep(currentStep);
+          updateStepNavigation();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   showStep(currentStep);
@@ -222,30 +296,30 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("mobile-nextBtn-1")
     .addEventListener("click", function () {
-    //   if (currentStep == 1) {
-    //     if (document.getElementById("coststep1_1").value == "") {
-    //       return false;
-    //     }
-    //     if (document.getElementById("coststep1_2").value == "") {
-    //       return false;
-    //     }
-    //     if (document.getElementById("coststep1_3").value == "") {
-    //       return false;
-    //     }
-    //     if (document.getElementById("coststep1_4").value == "") {
-    //       return false;
-    //     }
-    //   } else if (currentStep == 2) {
-    //     if (document.getElementById("coststep2_1").value == "") {
-    //       return false;
-    //     }
-    //     if (document.getElementById("coststep2_2").value == "") {
-    //       return false;
-    //     }
-    //     if (document.getElementById("coststep2_3").value == "") {
-    //       return false;
-    //     }
-    //   }
+      //   if (currentStep == 1) {
+      //     if (document.getElementById("coststep1_1").value == "") {
+      //       return false;
+      //     }
+      //     if (document.getElementById("coststep1_2").value == "") {
+      //       return false;
+      //     }
+      //     if (document.getElementById("coststep1_3").value == "") {
+      //       return false;
+      //     }
+      //     if (document.getElementById("coststep1_4").value == "") {
+      //       return false;
+      //     }
+      //   } else if (currentStep == 2) {
+      //     if (document.getElementById("coststep2_1").value == "") {
+      //       return false;
+      //     }
+      //     if (document.getElementById("coststep2_2").value == "") {
+      //       return false;
+      //     }
+      //     if (document.getElementById("coststep2_3").value == "") {
+      //       return false;
+      //     }
+      //   }
       if (currentStep < totalSteps) {
         currentStep++;
         showStep(currentStep);
@@ -265,54 +339,45 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("costformgetacall")
     .addEventListener("click", function () {
-      if (currentStep < totalSteps) {
-        currentStep++;
-        showStep(currentStep);
-        updateStepNavigation();
-      }
+      submitform();
     });
   document
     .getElementById("mobile-costformgetacall")
     .addEventListener("click", function () {
-      if (currentStep < totalSteps) {
-        currentStep++;
-        showStep(currentStep);
-        updateStepNavigation();
-      }
+      submitform();
     });
-
-
 });
 function toggleRotation(rotationIconId) {
-    var icon = document.getElementById(rotationIconId);
+  var icon = document.getElementById(rotationIconId);
 
-    // Toggle rotation by adding or removing the 'rotate' class
-    if (!icon.classList.contains("rotate")) {
-      icon.style.transform = "rotate(0deg)";
-      icon.classList.add("rotate");
-    } else {
-      icon.style.transform = "rotate(180deg)";
-      icon.classList.remove("rotate");
-    }
+  // Toggle rotation by adding or removing the 'rotate' class
+  if (!icon.classList.contains("rotate")) {
+    icon.style.transform = "rotate(0deg)";
+    icon.classList.add("rotate");
+  } else {
+    icon.style.transform = "rotate(180deg)";
+    icon.classList.remove("rotate");
   }
-
-  function toggleDetails(detailsId, rotationIconId) {
-    toggleRotation(rotationIconId);
-    var details = document.getElementById(detailsId);
-    if (details.style.display === "block") {
-      details.style.display = "none";
-    } else {
-      details.style.display = "block";
-    }
-  }
-  
-  // Function to toggle the active/non-active states
-  function toggleStates(container) {
-    const checkboxActive = container.querySelector('.checkbox-active');
-    const checkboxNonActive = container.querySelector('.checkbox-non-active');
-
-    // Toggle the visibility based on the current state
-    checkboxActive.style.display = checkboxActive.style.display === 'none' ? 'flex' : 'none';
-    checkboxNonActive.style.display = checkboxNonActive.style.display === 'none' ? 'flex' : 'none';
 }
 
+function toggleDetails(detailsId, rotationIconId) {
+  toggleRotation(rotationIconId);
+  var details = document.getElementById(detailsId);
+  if (details.style.display === "block") {
+    details.style.display = "none";
+  } else {
+    details.style.display = "block";
+  }
+}
+
+// Function to toggle the active/non-active states
+function toggleStates(container) {
+  const checkboxActive = container.querySelector(".checkbox-active");
+  const checkboxNonActive = container.querySelector(".checkbox-non-active");
+
+  // Toggle the visibility based on the current state
+  checkboxActive.style.display =
+    checkboxActive.style.display === "none" ? "flex" : "none";
+  checkboxNonActive.style.display =
+    checkboxNonActive.style.display === "none" ? "flex" : "none";
+}
